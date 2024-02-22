@@ -1,5 +1,6 @@
 <template>
   <div class="layout">
+    <LMHeader/>
     <NuxtPage/>
   </div>
 </template>
