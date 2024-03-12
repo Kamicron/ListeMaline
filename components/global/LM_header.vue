@@ -15,6 +15,7 @@
 
     <h1>Déconnexion</h1>
     <button @click="handleLogout">Se déconnecter</button>
+    <LMTheme />
   </div>
 </template>
 

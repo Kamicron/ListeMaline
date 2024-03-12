@@ -1,3 +1,5 @@
+import { Theme } from "../assets/enum/global";
+
 // types/global.ts
 export interface Product {
   id: number;
@@ -10,4 +12,10 @@ export interface Product {
 export interface Category {
   id: number;
   name: string;
+}
+
+
+export interface IButton {
+  display: string;
+  color: Theme;
 }
