@@ -1,34 +1,25 @@
 <template>
   <div>
-    <h1>Connexion</h1>
-    <form @submit.prevent="handleLogin">
-      <div>
-        <label for="email">Email :</label>
-        <input type="email" id="email" v-model="email" />
-      </div>
-      <div>
-        <label for="password">Mot de passe :</label>
-        <input type="password" id="password" v-model="password" />
-      </div>
-      <button type="submit">Se connecter</button>
-    </form>
-
-    <h1>Déconnexion</h1>
-    <button @click="handleLogout">Se déconnecter</button>
+    <button v-if="isLoggedIn" @click="logout">Déconnexion</button>
+    <div v-else>
+      <LM_connexion />
+      <LM_inscription />
+    </div>
   </div>
 </template>
 
-<script setup lang='ts'>
-import { authService } from '../../api/services/authService'
+<script setup lang="ts">
+import { authService } from '../../api/services/authService';
+import { ref, onMounted } from 'vue';
 
-let email = '';
-let password = '';
+const isLoggedIn = ref(false);
 
-const handleLogin = async () => {
-  await authService.login(email, password);
+const logout = () => {
+  authService.logout();
+  isLoggedIn.value = false;
 };
 
-const handleLogout = async () => {
-  await authService.logout();
-};
+onMounted(() => {
+  isLoggedIn.value = authService.isLoggedIn();
+});
 </script>

@@ -1,12 +1,16 @@
 import express from 'express';
 import { getConnection } from '../config/db';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
 
 const router = express.Router();
 
 // Route pour créer un utilisateur
 router.post('/register', async (req, res) => {
   try {
+    console.log('test');
+    
     const { name, email, password } = req.body;
     const connection = getConnection();
 
@@ -35,6 +39,7 @@ router.post('/register', async (req, res) => {
 });
 
 // Route pour se connecter
+// Route pour se connecter
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -58,7 +63,10 @@ router.post('/login', async (req, res) => {
     }
 
     // Générer le token JWT
-    const token = 'TODO: Générer le token JWT';
+    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    // Stocker le token JWT dans un cookie sécurisé
+    res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'none' });
 
     res.status(200).json({ token });
   } catch (error) {
@@ -66,6 +74,8 @@ router.post('/login', async (req, res) => {
     res.status(500).send('Erreur interne du serveur');
   }
 });
+
+
 
 // Route pour mettre à jour l'utilisateur
 router.put('/:id', async (req, res) => {
@@ -147,6 +157,25 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.get('/isLoggedIn', async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({ message: 'Token non fourni' });
+    }
 
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ message: 'Token invalide' });
+      }
+
+      // Le token est valide, l'utilisateur est connecté
+      return res.status(200).json({ message: 'Utilisateur connecté' });
+    });
+  } catch (error) {
+    console.error('Erreur lors de la vérification du token : ', error);
+    res.status(500).send('Erreur interne du serveur');
+  }
+});
 export default router;
 
