@@ -1,5 +1,5 @@
 <template>
-  <div class="layout" :class="{ 'dark-theme': store.isDark, 'white-theme': !store.isDark }">
+  <div class="layout">
     <LMTheme />
     <LMHeader/>
     <NuxtPage/>
@@ -10,10 +10,20 @@
 import { store } from './store/index'
 
 import { watchEffect } from 'vue';
-watchEffect(() => {
+
+import { onMounted } from 'vue';
+
+onMounted(() => {
   document.body.classList.toggle('dark-theme', store.isDark);
   document.body.classList.toggle('white-theme', !store.isDark);
 });
+
+if (typeof document !== 'undefined') {
+    watchEffect(() => {
+      document.body.classList.toggle('dark-theme', store.isDark);
+      document.body.classList.toggle('white-theme', !store.isDark);
+    });
+}
 </script>
 
 <style>
