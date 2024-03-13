@@ -1,20 +1,42 @@
 <template>
-    <button class="main_button" :class="store.isDark? 'dark-theme' : 'white-theme'" type="button">{{ button.display}}</button>
+<button class="main_button"
+        :class="[store.isDark ? 'dark-theme' : 'white-theme']"
+        :style="flexClass"
+        type="button">
+    <p class="nunito-button">{{ button.display}}</p>
+    <i v-if="button.icon" :class="button.icon?.iconCode" :style="`font-size: ${button.icon.size}px;`"></i>
+    </button>
 </template>
 
 <script setup lang='ts'>
 import { PropType } from 'vue';
 import { IButton } from '../../../types/global';
-import { Theme } from '../../../assets/enum/global';
+import { IconPosition, Theme } from '../../../assets/enum/global';
 import { store } from '../../../store/index';
 
-    defineProps({
-      button: {type: Object as PropType<IButton>, default: {}}
-    })
+const props = defineProps({
+  button: {type: Object as PropType<IButton>, default: {}}
+})
+
+const flexClasses = {
+  [IconPosition.UP]: 'flex-direction: column-reverse;',
+  [IconPosition.DOWN]: 'flex-direction: column;',
+  [IconPosition.RIGHT]: 'flex-direction: row-reverse;',
+  [IconPosition.LEFT]: 'flex-direction: row;'
+};
+
+const flexClass = props.button.icon ? flexClasses[props.button.icon.position] : '';
+console.log('flexClass', flexClass)
 </script>
 
 <style lang='scss' scoped>
+
+// fa-duotone fa-house
   .main_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
     -webkit-text-size-adjust: 100%;
     margin: 0;
     font-weight: 400;

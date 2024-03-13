@@ -1,4 +1,4 @@
-import { Theme } from "../assets/enum/global";
+import { IconPosition, Theme } from "../assets/enum/global";
 import { TypeInput } from "../assets/enum/global";
 
 // types/global.ts
@@ -19,6 +19,11 @@ export interface Category {
 export interface IButton {
   display: string;
   color: Theme;
+  icon?: {
+    position: IconPosition;
+    iconCode: string;
+    size: number;
+  }
 }
 
 export interface IInput {
