@@ -1,4 +1,5 @@
 import { Theme } from "../assets/enum/global";
+import { TypeInput } from "../assets/enum/global";
 
 // types/global.ts
 export interface Product {
@@ -18,4 +19,14 @@ export interface Category {
 export interface IButton {
   display: string;
   color: Theme;
+}
+
+export interface IInput {
+  value: string;
+  type: TypeInput;
+  color: Theme;
+  placeholder: string;
+  label?: string;
+  error?: string
+
 }

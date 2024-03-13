@@ -14,19 +14,19 @@
         <label for="password">Mot de passe :</label>
         <input type="password" id="password" v-model="password" />
       </div>
-      <button type="submit">S'inscrire</button>
+      <button type="submit" @click="handleRegister">S'inscrire</button>
     </form>
   </div>
 </template>
 
 <script setup lang='ts'>
-import { userService } from '../../api/services/userService';
+import { authService } from '../../api/services/authService';
 
 let name = '';
 let email = '';
 let password = '';
 
 const handleRegister = async () => {
-  await userService.register(name, email, password);
+  await authService.register(name, email, password);
 };
 </script>

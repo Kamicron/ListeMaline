@@ -1,18 +1,29 @@
 <template>
-  <div class="layout" :class="isDarkMode">
+  <div class="layout">
+    <LMTheme />
     <LMHeader/>
     <NuxtPage/>
-  </div>
+    From A: {{ store.isDark }}  </div>
 </template>
 
-<script setup lang='ts'>
-import { ref, onMounted, onUnmounted, computed, watch } from 'vue';
+<script setup lang="ts">
+import { store } from './store/index'
 
-const isDarkMode = ref(localStorage.getItem('isDarkMode') || undefined)
-watch(isDarkMode, newValue => {
-    if (!newValue) localStorage.removeItem('isDarkMode')
-    else localStorage.setItem('isDarkMode', newValue)
-})
+import { watchEffect } from 'vue';
+
+import { onMounted } from 'vue';
+
+onMounted(() => {
+  document.body.classList.toggle('dark-theme', store.isDark);
+  document.body.classList.toggle('white-theme', !store.isDark);
+});
+
+if (typeof document !== 'undefined') {
+    watchEffect(() => {
+      document.body.classList.toggle('dark-theme', store.isDark);
+      document.body.classList.toggle('white-theme', !store.isDark);
+    });
+}
 </script>
 
 <style>
