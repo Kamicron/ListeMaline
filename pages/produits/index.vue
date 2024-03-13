@@ -17,8 +17,6 @@
         <p>{{ product.price }} €</p>
       </div>
     </div>
-
-    <ButtonMainButton display="Boutton"/>
   </div>
 </template>
 

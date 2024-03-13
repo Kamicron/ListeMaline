@@ -3,12 +3,10 @@ import cors from 'cors';
 import { initializeConnection } from './config/db'; // Mettez à jour le chemin si nécessaire
 import mainRouter from './routes/index';
 
-
-
 const app = express();
 const port = process.env.PORT_BACK; // Vous pouvez changer le port selon vos besoins
 app.use(cors());
-app.use(express.static('public'))
+app.use(express.static('public'));
 
 const startServer = async () => {
   try {
@@ -19,8 +17,12 @@ const startServer = async () => {
     app.use(express.json());
     
     // Utilisation des routeurs
-    app.use('/api/', mainRouter);
+    app.use('/api', mainRouter);
 
+    // Montez votre route `/test` sur votre application Express
+    app.get('/test', async (req, res) => {
+      res.send('Hello from /test');
+    });
 
     app.listen(port, () => {
       console.log(`Serveur en écoute sur http://localhost:${port}/`);
@@ -31,5 +33,3 @@ const startServer = async () => {
 };
 
 startServer(); // Démarrer le serveur
-console.log('test');
-
