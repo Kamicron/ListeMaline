@@ -21,7 +21,7 @@ const startServer = async () => {
 
     // Montez votre route `/test` sur votre application Express
     app.get('/test', async (req, res) => {
-      res.send('Hello from /test');
+      res.send('Hello from /testez');
     });
 
     app.listen(port, () => {
