@@ -2,5 +2,5 @@
 import { reactive } from 'vue'
 
 export const store = reactive({
-  isDark: false
-})
+  isDark: false,
+  accessToken: null as string | null})

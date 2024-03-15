@@ -1,10 +1,10 @@
 <template>
   <div>
-    <button v-if="isLoggedIn" @click="logout">Déconnexion</button>
-    <div v-else>
+    <!-- <button v-if="isLoggedIn" @click="logout">Déconnexion</button>
+    <div v-else> -->
       <LM_connexion />
-      <LM_inscription />
-    </div>
+      <!-- <LM_inscription /> -->
+    <!-- </div> -->
   </div>
 </template>
 
@@ -20,6 +20,6 @@ const logout = () => {
 };
 
 onMounted(() => {
-  isLoggedIn.value = authService.isLoggedIn();
+  // isLoggedIn.value = authService.isLoggedIn();
 });
 </script>
