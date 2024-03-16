@@ -1,7 +1,6 @@
 <template>
   <div class="layout">
-    <LMTheme />
-    <LMHeader/>
+    <HeaderLMHeader/>
     <NuxtPage/>
     From A: {{ store.isDark }}  </div>
 </template>

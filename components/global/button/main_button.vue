@@ -4,9 +4,8 @@
 
 <script setup lang='ts'>
 import { PropType } from 'vue';
-import { IButton } from '../../../types/global';
-import { Theme } from '../../../assets/enum/global';
-import { store } from '../../../store/index';
+import { IButton } from '@/types/global';
+import { store } from '@/store/index';
 
     defineProps({
       button: {type: Object as PropType<IButton>, default: {}}

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div v-if="store.accessToken !== null">
+    <p>token : {{ store.accessToken }}</p>
+    <div v-if="store.accessToken === null">
       <h1>Connexion</h1>
         <form  @submit.prevent="handleLogin">
           <div>
@@ -18,15 +19,11 @@
       <h1>Déconnexion</h1>
       <button @click="handleLogout">Se déconnecter</button>
     </div>
-    <p>token : {{ store.accessToken }}</p>
   </div>
 </template>
 
 <script setup lang='ts'>
-import { ref } from 'vue';
-import { authService } from '../../api/services/authService'
-import { store } from '../../store/index'
-import { watch } from 'fs';
+import { store } from '@/store/index'
 
 let nom = '';
 let password = '';
