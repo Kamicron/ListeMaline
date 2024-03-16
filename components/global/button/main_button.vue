@@ -10,7 +10,7 @@
 
 <script setup lang='ts'>
 import { PropType } from 'vue';
-import { IconPosition, Theme } from '../../../assets/enum/global';
+import { IconPosition, Theme } from '@/assets/enum/global';
 import { IButton } from '@/types/global';
 import { store } from '@/store/index';
 

@@ -4,7 +4,7 @@
     <!-- <button v-if="isLoggedIn" @click="logout">Déconnexion</button>
     <div v-else> -->
       <HeaderLM_connexion />
-      <!-- <LM_inscription /> -->
+      <HeaderLM_inscription />
     <!-- </div> -->
   </div>
 </template>

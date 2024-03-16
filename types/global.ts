@@ -1,5 +1,5 @@
-import { IconPosition, Theme } from "../assets/enum/global";
-import { TypeInput } from "../assets/enum/global";
+import { MessageValidation, Theme, IconPosition } from "@/assets/enum/global";
+import { TypeInput } from "@/assets/enum/global";
 
 // types/global.ts
 export interface Product {
@@ -33,4 +33,10 @@ export interface IInput {
   label?: string;
   error?: string
 
+}
+
+export interface Message {
+  id: number;
+  text: string;
+  type: MessageValidation;
 }

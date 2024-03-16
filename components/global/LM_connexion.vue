@@ -15,12 +15,12 @@
     <LMInscription />
 
     <h1>Déconnexion</h1>
-    <button @click="handleLogout">Se déconnecter</button>
+    <!-- <button @click="handleLogout">Se déconnecter</button> -->
   </div>
 </template>
 
 <script setup lang='ts'>
-import { authService } from '../../api/services/authService'
+import { authService } from '@/api/services/authService'
 
 let email = '';
 let password = '';
@@ -29,7 +29,7 @@ const handleLogin = async () => {
   await authService.login(email, password);
 };
 
-const handleLogout = async () => {
-  await authService.logout();
-};
+// const handleLogout = async () => {
+//   await authService.logout();
+// };
 </script>

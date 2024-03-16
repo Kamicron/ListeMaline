@@ -10,14 +10,13 @@
 
 <script setup lang='ts'>
 import { ref } from 'vue';
-import { IButton, IInput } from '../../types/global';
-import { IconPosition, Theme, TypeInput } from '../../assets/enum/global';
+import { IButton, IInput } from '@/types/global';
+import { IconPosition, Theme, TypeInput } from '@/assets/enum/global';
 
 const sizeIcon = 20
 
 const buttonLeft = ref<IButton>({
   display:'Left', 
-  color:Theme.DARK, 
   icon: {
     position: IconPosition.LEFT, 
     iconCode: "fa-duotone fa-house", 
@@ -27,7 +26,6 @@ const buttonLeft = ref<IButton>({
 
 const buttonRight = ref<IButton>({
   display:'Right', 
-  color:Theme.DARK, 
   icon: {
     position: IconPosition.RIGHT, 
     iconCode: "fa-duotone fa-house", 
@@ -37,7 +35,6 @@ const buttonRight = ref<IButton>({
 
 const buttonUp = ref<IButton>({
   display:'Up', 
-  color:Theme.DARK, 
   icon: {
     position: IconPosition.UP, 
     iconCode: "fa-duotone fa-house", 
@@ -47,7 +44,6 @@ const buttonUp = ref<IButton>({
 
 const buttonDown = ref<IButton>({
   display:'down', 
-  color:Theme.DARK, 
   icon: {
     position: IconPosition.DOWN, 
     iconCode: "fa-duotone fa-house", 
