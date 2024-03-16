@@ -2,7 +2,7 @@
   <div class="LM_Input">
     <p class="LM_Input__label" :class="store.isDark? 'dark-label' : 'white-label'" v-if="input?.label">{{ input.label }}</p>
     <input class="LM_Input__input" :value="input?.value" :placeholder="input?.placeholder" :type="input?.type" :class="store.isDark? 'dark-theme' : 'white-theme'"/>
-    <p class="LM_Input__error" :class="store.isDark? 'dark-label' : 'white-label'" v-if="input?.error">{{ input.error }}</p>
+    <p class="LM_Input__error nunito-important" :class="store.isDark? 'dark-label' : 'white-label'" v-if="input?.error">{{ input.error }}</p>
 
   </div>
 </template>
@@ -51,6 +51,7 @@ defineProps({
     
     &__error {
       color: #c43232 !important;
+      margin: 5px 10px;
     }
   }
 

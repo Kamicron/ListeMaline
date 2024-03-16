@@ -3,6 +3,14 @@ export enum Theme {
   DARK = 'DARK'
 }
 
+export enum IconPosition {
+  UP = 'UP',
+  DOWN = 'DOWN',
+  LEFT = 'LEFT',
+  RIGHT = 'RIGHT',
+
+}
+
 export enum TypeInput {
   TEXT = 'TEXT',
   DATE = 'DATE',

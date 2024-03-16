@@ -8,6 +8,7 @@ export default defineNuxtConfig({
             scss: {
                 additionalData: `
                 @import "@/assets/scss/variables/colors.scss";
+                @import "@/assets/scss/variables/font.scss";
                 `,
             }
         },
