@@ -21,10 +21,9 @@
 </template>
 
 <script setup lang='ts'>
-import { ref, computed, onMounted } from 'vue';
-import { productService } from '../api/services/productService';
-import { categoryService } from '../api/services/categoryService';
-import { Product, Category } from '../types/global';
+import { productService } from '@/api/services/productService';
+import { categoryService } from '@/api/services/categoryService';
+import { Product, Category } from '@/types/global';
 
 // Recherche par nom
 const searchName = ref('');

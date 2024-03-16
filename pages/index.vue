@@ -18,15 +18,16 @@
       </div>
     </div>
 
-    <ButtonMainButton display="Boutton"/>
+    <ButtonMainButton :buttonTest="buttonTest"/>
   </div>
 </template>
 
 <script setup lang='ts'>
-import { ref, computed, onMounted } from 'vue';
-import { productService } from '../api/services/productService';
-import { categoryService } from '../api/services/categoryService';
-import { Product, Category } from '../types/global';
+import { productService } from '@/api/services/productService';
+import { categoryService } from '@/api/services/categoryService';
+import { Product, Category, IButton } from '@/types/global';
+
+const buttonTest = ref<IButton>({display:'Coucou'})
 
 // Recherche par nom
 const searchName = ref('');

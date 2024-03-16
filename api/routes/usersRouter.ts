@@ -1,181 +1,80 @@
-import express from 'express';
+require('dotenv').config ();
+const express = require('express')
+const app = express()
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 import { getConnection } from '../config/db';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 
+
+// api/routes/test.ts
+// import express from 'express';
+app.use(express.json());
 
 const router = express.Router();
 
-// Route pour créer un utilisateur
-router.post('/register', async (req, res) => {
+router.get('/test', async (req, res) => { // Changez la route de '/test' à '/'
+  console.log('test');
+  res.send('test venant de api/test/test');
+});
+
+
+router.get('/loginTest', async (req, res) => { // Changez la route de '/test' à '/'
+  console.log('test');
+  res.send('test venant de api/test/test');
+});
+
+router.post('/login', async (req, res) => {
+  const connection = getConnection();
   try {
-    console.log('test');
-    
-    const { name, email, password } = req.body;
-    const connection = getConnection();
+    const [rows, fields] = await connection.execute('SELECT * FROM users WHERE name = ?', [req.body.name]);
+    if (rows.length === 0) return res.status(400).send('Cannot find user');
 
-    // Vérifier si l'utilisateur existe déjà
-    const [rows]: any[] = await connection.query(`
-      SELECT * FROM users WHERE email = ?
-    `, [email]);
+    const user = rows[0];
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      // Bonne authentification
+      const accessToken = generateAccessToken(user);
+      const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+      // Vous pouvez stocker le token rafraîchissant dans la base de données ou dans un tableau en mémoire selon vos besoins.
+      // Ici, nous ne stockons pas le rafraîchissement pour des raisons de simplicité.
+      res.json({ accessToken: accessToken, refreshToken: refreshToken });
+    } else {
+      res.status(401).send('Mot de passe incorrect');
+    }
+  } catch (error) {
+    console.error('Erreur lors de la connexion : ', error);
+    res.status(500).send('Erreur interne du serveur');
+  }
+});
 
-    if (rows.length > 0) {
-      return res.status(400).json({ message: 'Cet email est déjà utilisé' });
+// Fonction pour générer le token d'accès
+function generateAccessToken(user) {
+  return jwt.sign({ id: user.id, name: user.name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+}
+
+router.post('/register', async (req, res) => {
+  const connection = getConnection();
+  try {
+    // Vérifier si l'utilisateur existe déjà dans la base de données
+    const [existingUsers, _] = await connection.execute('SELECT * FROM users WHERE name = ?', [req.body.name]);
+    if (existingUsers.length > 0) {
+      return res.status(400).send('Utilisateur déjà existant');
     }
 
     // Hasher le mot de passe
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-    // Insérer l'utilisateur dans la base de données
-    await connection.query(`
-      INSERT INTO users (name, email, password) VALUES (?, ?, ?)
-    `, [name, email, hashedPassword]);
+    // Générer le token d'accès
+    const user = { id: existingUsers.insertId, name: req.body.name };
+    const accessToken = generateAccessToken(user);
 
-    res.status(201).json({ message: 'Utilisateur créé avec succès' });
+    // Insérer l'utilisateur dans la base de données avec le champ email et token
+    await connection.execute('INSERT INTO users (name, email, password, token) VALUES (?, ?, ?, ?)', [req.body.name, req.body.email, hashedPassword, accessToken]);
+
+    res.status(201).send({ message: 'Utilisateur enregistré avec succès', accessToken });
   } catch (error) {
-    console.error('Erreur lors de la création de l\'utilisateur : ', error);
+    console.error('Erreur lors de l\'inscription : ', error);
     res.status(500).send('Erreur interne du serveur');
   }
 });
 
-// Route pour se connecter
-// Route pour se connecter
-router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const connection = getConnection();
-
-    // Récupérer l'utilisateur par email
-    const [rows]: any[] = await connection.query(`
-      SELECT * FROM users WHERE email = ?
-    `, [email]);
-
-    if (rows.length === 0) {
-      return res.status(400).json({ message: 'Email ou mot de passe incorrect' });
-    }
-
-    // Vérifier le mot de passe
-    const user = rows[0];
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      return res.status(400).json({ message: 'Email ou mot de passe incorrect' });
-    }
-
-    // Générer le token JWT
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-    // Stocker le token JWT dans un cookie sécurisé
-    res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'none' });
-
-    res.status(200).json({ token });
-  } catch (error) {
-    console.error('Erreur lors de la connexion de l\'utilisateur : ', error);
-    res.status(500).send('Erreur interne du serveur');
-  }
-});
-
-
-
-// Route pour mettre à jour l'utilisateur
-router.put('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name, email, password } = req.body;
-    const connection = getConnection();
-
-    // Vérifier si l'utilisateur existe
-    const [rows]: any[] = await connection.query(`
-      SELECT * FROM users WHERE id = ?
-    `, [id]);
-
-    if (rows.length === 0) {
-      return res.status(404).json({ message: 'Utilisateur non trouvé' });
-    }
-
-    // Mettre à jour l'utilisateur
-    await connection.query(`
-      UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?
-    `, [name, email, password, id]);
-
-    res.status(200).json({ message: 'Utilisateur mis à jour avec succès' });
-  } catch (error) {
-    console.error('Erreur lors de la mise à jour de l\'utilisateur : ', error);
-    res.status(500).send('Erreur interne du serveur');
-  }
-});
-
-// Route pour supprimer l'utilisateur
-router.delete('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const connection = getConnection();
-
-    // Vérifier si l'utilisateur existe
-    const [rows]: any[] = await connection.query(`
-      SELECT * FROM users WHERE id = ?
-    `, [id]);
-
-    if (rows.length === 0) {
-      return res.status(404).json({ message: 'Utilisateur non trouvé' });
-    }
-
-    // Supprimer l'utilisateur
-    await connection.query(`
-      DELETE FROM users WHERE id = ?
-    `, [id]);
-
-    res.status(200).json({ message: 'Utilisateur supprimé avec succès' });
-  } catch (error) {
-    console.error('Erreur lors de la suppression de l\'utilisateur : ', error);
-    res.status(500).send('Erreur interne du serveur');
-  }
-});
-
-// Route pour récupérer les informations d'un utilisateur par son ID
-router.get('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const connection = getConnection();
-
-    // Récupérer l'utilisateur par son ID
-    const [rows]: any[] = await connection.query(`
-      SELECT * FROM users WHERE id = ?
-    `, [id]);
-
-    if (rows.length === 0) {
-      return res.status(404).json({ message: 'Utilisateur non trouvé' });
-    }
-
-    const user = rows[0];
-    delete user.password; // Supprimer le mot de passe de la réponse
-
-    res.status(200).json(user);
-  } catch (error) {
-    console.error('Erreur lors de la récupération de l\'utilisateur : ', error);
-    res.status(500).send('Erreur interne du serveur');
-  }
-});
-
-router.get('/isLoggedIn', async (req, res) => {
-  try {
-    const token = req.headers.authorization?.split(' ')[1];
-    if (!token) {
-      return res.status(401).json({ message: 'Token non fourni' });
-    }
-
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-      if (err) {
-        return res.status(401).json({ message: 'Token invalide' });
-      }
-
-      // Le token est valide, l'utilisateur est connecté
-      return res.status(200).json({ message: 'Utilisateur connecté' });
-    });
-  } catch (error) {
-    console.error('Erreur lors de la vérification du token : ', error);
-    res.status(500).send('Erreur interne du serveur');
-  }
-});
 export default router;
-

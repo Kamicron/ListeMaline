@@ -7,11 +7,11 @@
 
 <script setup lang='ts'>
 import { ref } from 'vue';
-import { IButton, IInput } from '../../types/global';
-import { Theme, TypeInput } from '../../assets/enum/global';
+import { IButton, IInput } from '@/types/global';
+import { Theme, TypeInput } from '@/assets/enum/global';
 
 
-const buttonTest = ref<IButton>({display:'Coucou', color:Theme.DARK})
+const buttonTest = ref<IButton>({display:'Coucou'})
 const inputTest = ref<IInput>({
   value:"", 
   placeholder:"test", 

@@ -8,9 +8,8 @@
 </template>
 
 <script setup lang='ts'>
-import { PropType } from 'vue';
-import { IInput } from '../../../types/global';
-import { store } from '../../../store/index';
+import { IInput } from '@/types/global';
+import { store } from '@/store/index';
 
 defineProps({
   input: {type: Object as PropType<IInput>}
