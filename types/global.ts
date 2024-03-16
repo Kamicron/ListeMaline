@@ -1,4 +1,4 @@
-import { Theme } from "@/assets/enum/global";
+import { MessageValidation, Theme } from "@/assets/enum/global";
 import { TypeInput } from "@/assets/enum/global";
 
 // types/global.ts
@@ -28,4 +28,10 @@ export interface IInput {
   label?: string;
   error?: string
 
+}
+
+export interface Message {
+  id: number;
+  text: string;
+  type: MessageValidation;
 }

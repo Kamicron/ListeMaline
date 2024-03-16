@@ -20,6 +20,8 @@
 </template>
 
 <script setup lang='ts'>
+import { authService } from '@/api/services/authService';
+
 
 let name = '';
 let email = '';

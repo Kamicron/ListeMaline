@@ -1,5 +1,10 @@
 <template>
   <div>
+    <Alert ref="alertRef" />
+
+    <button @click="addSuccessMessage">Ajouter un message de succès</button>
+    <button @click="addErrorMessage">Ajouter un message d'erreur</button>
+
     <p>token : {{ store.accessToken }}</p>
     <div v-if="store.accessToken === null">
       <h1>Connexion</h1>
@@ -23,10 +28,24 @@
 </template>
 
 <script setup lang='ts'>
+import { authService } from '@/api/services/authService';
 import { store } from '@/store/index'
+import Alert from '@/components/global/alert/alert.vue';
+
+const alertRef = ref<any>(null);
 
 let nom = '';
 let password = '';
+
+// Fonction pour ajouter un message de succès
+const addSuccessMessage = () => {
+  alertRef.value?.addMessage('success', 'Opération réussie !');
+};
+
+// Fonction pour ajouter un message d'erreur
+const addErrorMessage = () => {
+  alertRef.value?.addMessage('error', 'Erreur lors de l\'opération.');
+};
 
 const handleLogin = async () => {
   try {
@@ -54,5 +73,9 @@ const isLogged = ref<boolean>(false)
 const handleLogout = async () => {
   store.accessToken = null
   // await authService.logout();
+};
+
+const showMessageAlert = (status: 'success' | 'error', message: string) => {
+  alertRef.value?.addMessage(status, message);
 };
 </script>

@@ -12,3 +12,8 @@ export enum TypeInput {
   TEL = 'TEL',
   NUMBER = 'NUMBER'
 }
+
+export enum MessageValidation {
+  SUCCESS = 'success',
+  ERROR = 'error'
+}
