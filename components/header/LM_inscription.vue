@@ -29,6 +29,8 @@
 
 <script setup lang='ts'>
 import { authService } from '@/api/services/authService';
+import { Theme, TypeInput } from '@/assets/enum/global';
+import { IInput } from '@/types/global';
 
 
 let name = '';

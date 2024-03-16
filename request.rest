@@ -14,7 +14,7 @@ POST http://localhost:3001/api/users/login
 Content-Type: application/json
 
 {
-  "name": "test",
+  "name": "kami",
   "password": "test25!!"
 }
 
@@ -28,3 +28,14 @@ Content-Type: application/json
   "email": "kamicron+kamiML@gmail.com",
   "password": "test25!!"
 }
+
+###
+
+POST http://localhost:3001/api/users/logout
+Content-Type: application/json
+
+{
+  "id": "3"
+}
+
+###

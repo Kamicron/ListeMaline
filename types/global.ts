@@ -32,7 +32,6 @@ export interface IInput {
   placeholder: string;
   label?: string;
   error?: string
-
 }
 
 export interface Message {

@@ -77,4 +77,20 @@ router.post('/register', async (req, res) => {
   }
 });
 
+// router.post('/logout', async (req, res) => {
+//   const connection = getConnection();
+//   try {
+//     // Supprimer le token d'accès de l'utilisateur dans la base de données
+//     await connection.execute('UPDATE users SET token = NULL WHERE id = ?', [req.body.id]);
+
+//     res.status(200).send('Déconnexion réussie');
+//   } catch (error) {
+//     console.error('Erreur lors de la déconnexion : ', error);
+//     res.status(500).send('Erreur interne du serveur');
+//   }
+// });
+
+
+
+
 export default router;

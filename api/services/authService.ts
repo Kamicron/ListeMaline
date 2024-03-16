@@ -16,14 +16,14 @@
         });
         
         if (!response.ok) {
-          throw new Error('Erreur lors de la connexion : ' + response.statusText);
+          throw new Error("Identifiant ou mot de passe incorect");
         }
         
         const data = await response.json();
         return data.accessToken;
       } catch (error) {
-        console.error('Erreur lors de la connexion : ', error);
-        throw new Error('Erreur lors de la connexion : ' + error.message);
+        console.error(error);
+        throw new Error(error.message);
       }
     },
 
