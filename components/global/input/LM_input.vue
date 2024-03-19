@@ -1,20 +1,40 @@
 <template>
   <div class="LM_Input">
-    <p class="LM_Input__label" :class="store.isDark? 'dark-label' : 'white-label'" v-if="input?.label">{{ input.label }}</p>
-    <input class="LM_Input__input" :value="input?.value" :placeholder="input?.placeholder" :type="input?.type" :class="store.isDark? 'dark-theme' : 'white-theme'"/>
-    <p class="LM_Input__error nunito-important" :class="store.isDark? 'dark-label' : 'white-label'" v-if="input?.error">{{ input.error }}</p>
-
+    <p class="LM_Input__label" :class="store.isDark? 'dark-label' : 'white-label'" v-if="properties?.label">{{ properties.label }}</p>    
+    <input 
+      :placeholder="properties?.placeholder" 
+      :value="modelValue" 
+      class="LM_Input__input"
+      :class="store.isDark? 'dark-theme' : 'white-theme'"
+      :type="properties?.type" 
+      @input="handleInput">
+      <p 
+        class="LM_Input__error nunito-important" 
+        :class="store.isDark? 'dark-label' : 'white-label'" 
+        v-if="properties?.error">{{ properties.error }}</p>
   </div>
 </template>
 
-<script setup lang='ts'>
-import { IInput } from '@/types/global';
+<script setup lang="ts">
 import { store } from '@/store/index';
+import { IInput } from '@/types/global';
 
-defineProps({
-  input: {type: Object as PropType<IInput>}
-})
-  
+const props = defineProps({
+  modelValue: { type: String, required: true },
+  properties: {type: Object as PropType<IInput>},
+
+  // properties: {
+  //   label: { type: String, required: true },
+  //   placeholder: { type: String, default: '' },
+  //   error: { type: String, default: '' },
+  // }
+});
+
+const emit = defineEmits(['update:modelValue'])
+
+const handleInput = (event) => {
+  emit('update:modelValue', event.target.value)
+}
 </script>
 
 <style lang='scss' scoped>

@@ -26,7 +26,6 @@ export interface IButton {
 }
 
 export interface IInput {
-  value: string;
   type: TypeInput;
   color: Theme;
   placeholder: string;

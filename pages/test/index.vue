@@ -1,11 +1,12 @@
 <template>
   <div class="wrapper">
-    <ButtonMainButton :button="buttonUp"/>
+    <!-- <ButtonMainButton :button="buttonUp"/>
     <ButtonMainButton :button="buttonDown"/>
     <ButtonMainButton :button="buttonLeft"/>
-    <ButtonMainButton :button="buttonRight"/>
-    <InputLMInput :input="inputTest" />
-  </div>
+    <ButtonMainButton :button="buttonRight"/> -->
+    <InputLMInput v-model="inputTest" :properties="propsTest" />
+    <p>inputTest : {{ inputValue }}</p>
+      </div>
 </template>
 
 <script setup lang='ts'>
@@ -51,13 +52,19 @@ const buttonDown = ref<IButton>({
   }
 })
 
-const inputTest = ref<IInput>({
-  value:"", 
+const propsTest = ref<IInput>({
   placeholder:"test", 
   type:TypeInput.TEXT, 
   color:Theme.DARK,
   label: 'Prénom',
   error: "Ceci est un message d'erreur"
+})
+
+const inputTest = ref("coucou")
+
+const inputValue = computed({
+  get: () => inputTest.value,
+  set: (value) => { inputTest.value = value }
 })
   
 </script>

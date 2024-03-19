@@ -5,10 +5,10 @@
     <div v-if="store.accessToken === null">
       <h1>Connexion</h1>
       <div>
-        <InputLMInput :input="inputName" />
+        <InputLMInput v-model="valueName" :properties="inputName" />
       </div>
       <div>
-        <InputLMInput :input="inputPassword" />
+        <InputLMInput v-model="valuePassword" :properties="inputPassword" />
       </div>
       <ButtonMainButton :button="buttonConnexion" @click="handleLogin" />
       <button type="submit">Se connecter</button>
@@ -39,7 +39,6 @@ const showMessageAlert = (status: MessageValidation.SUCCESS | MessageValidation.
 const buttonConnexion = ref<IButton>({ display: "Se connecter" })
 
 const inputName = ref<IInput>({
-  value: name,
   placeholder: "Nom De Famille",
   type: TypeInput.TEXT,
   color: Theme.DARK,
@@ -47,8 +46,10 @@ const inputName = ref<IInput>({
   // error: "Ceci est un message d'erreur"
 })
 
+const valueName = ref('')
+const valuePassword = ref('')
+
 const inputPassword = ref<IInput>({
-  value: password,
   placeholder: "test25!!",
   type: TypeInput.PASSWORD,
   color: Theme.DARK,
@@ -59,10 +60,10 @@ const inputPassword = ref<IInput>({
 const handleLogin = async () => {
   try {
     console.log('initialisation');
-    console.log('name', inputName.value.value);
-    console.log('password', inputPassword.value.value );
+    console.log('name', valueName);
+    console.log('password', valuePassword );
     
-    const accessToken = await authService.login(inputName.value.value, inputPassword.value.value);
+    const accessToken = await authService.login(valueName.value, valuePassword.value);
     console.log("fin envois");
     showMessageAlert(MessageValidation.SUCCESS, "Connexion réussis")
 
