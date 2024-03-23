@@ -31,7 +31,10 @@ export interface IInput {
   color: Theme;
   placeholder: string;
   label?: string;
-  error?: string;
+  error?: {
+    display: string;
+    enable: boolean;
+  }
   icon?: IFontAwesomeIcon;
 }
 

@@ -43,8 +43,10 @@ const inputName = ref<IInput>({
   type: TypeInput.TEXT,
   color: Theme.DARK,
   label: 'Nom',
-  // error: "Ceci est un message d'erreur"
-})
+  error: {
+    display: "",
+    enable: true
+  }})
 
 const valueName = ref('')
 const valuePassword = ref('')
@@ -54,7 +56,10 @@ const inputPassword = ref<IInput>({
   type: TypeInput.PASSWORD,
   color: Theme.DARK,
   label: 'Mot de passe',
-  // error: "Ceci est un message d'erreur"
+  error: {
+    display: "",
+    enable: true
+  }
 })
 
 const handleLogin = async () => {
@@ -71,6 +76,8 @@ const handleLogin = async () => {
     store.accessToken = accessToken;
   } catch (error) {
     console.error('Erreur lors de la connexion : ', error);
+    inputPassword.value.error.display = "Identifiants ou mot de passe incorrrect"
+    inputName.value.error.display = "Identifiants ou mot de passe incorrrect"
     showMessageAlert(MessageValidation.ERROR, error.toString())
 
     // Gérer l'erreur si nécessaire

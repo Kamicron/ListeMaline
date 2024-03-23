@@ -58,7 +58,10 @@ const propsTest1 = ref<IInput>({
   type:TypeInput.TEXT, 
   color:Theme.DARK,
   label: 'Prénom',
-  error: "Ceci est un message d'erreur",
+  error: {
+    display: "Ceci est un message d'erreur",
+    enable: true,
+  }
 })
 
 const propsTest2 = ref<IInput>({
@@ -66,8 +69,11 @@ const propsTest2 = ref<IInput>({
   type:TypeInput.TEXT, 
   color:Theme.DARK,
   label: 'Prénom',
-  error: "Ceci est un message d'erreur",
-  icon: {
+  error: {
+    display: "Ceci est un message d'erreur",
+    enable: true,
+  },
+    icon: {
     size: 18,
     position: IconPosition.LEFT, 
     iconCode: "fa-duotone fa-house", 

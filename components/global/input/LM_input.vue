@@ -6,8 +6,8 @@
 
     <InputLMInput__logo v-if="properties?.icon" v-model="vModel" :properties="properties" />
     <InputLMInput_base v-else v-model="vModel" :properties="properties" />
-    <p class="LM_Input__error nunito-important" v-if="properties?.error">
-      {{ properties.error }}
+    <p class="LM_Input__error nunito-important" :class="properties.error.enable && properties.error.display === '' ? 'LM_Input__error--margin' : ''" v-if="properties?.error">
+      {{ properties.error.display }}
     </p>
   </div>
 </template>
@@ -27,7 +27,10 @@ const vModel = ref<string>(props.modelValue);
 
 watch(
   () => vModel.value,
-  (newVal) => {
+  (newVal, oldVal) => {
+    if (props.properties.error && props.properties.error.display && newVal !== oldVal) {
+      props.properties.error.display = "";
+    }
     emit("update:modelValue", newVal);
   }
 );
@@ -66,6 +69,10 @@ watch(
   &__error {
     color: #c43232 !important;
     margin: 5px 10px;
+
+    &--margin {
+      margin-bottom: 26px;
+    }
   }
 }
 
