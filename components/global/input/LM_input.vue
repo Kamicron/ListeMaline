@@ -1,5 +1,6 @@
 <template>
-  <div class="LM_Input">
+  <div class="LM_Input"
+  >
     <p class="LM_Input__label" :class="store.isDark? 'dark-label' : 'white-label'" v-if="properties?.label">{{ properties.label }}</p>    
     <input 
       :placeholder="properties?.placeholder" 
@@ -32,7 +33,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue'])
 
-const handleInput = (event) => {
+const handleInput = (event: any) => {
   emit('update:modelValue', event.target.value)
 }
 </script>
@@ -59,14 +60,14 @@ const handleInput = (event) => {
       padding: .6rem .75rem;
       font-weight: 300;
       line-height: 1.5;
-      color: #44476a;
-      background-color: #e6e7ee;
+      color: $dark-color;
+      background-color: $white-color;
       background-clip: padding-box;
-      border: .0625rem solid #d1d9e6;
+      border: .0625rem solid $gray-neu;
       transition: all .3s ease-in-out;
       font-size: 1rem;
       border-radius: .55rem;
-      box-shadow: inset 2px 2px 5px #b8b9be,inset -3px -3px 7px #fff;
+      box-shadow: inset 2px 2px 5px $dark-neu,inset -3px -3px 7px $light-neu;
     }
     
     &__error {
@@ -76,11 +77,12 @@ const handleInput = (event) => {
   }
 
   .dark-theme {
-    color: $white-color;
-    background-color: $dark-color;
-    border-color: $dark-color;
-    box-shadow: inset 2px 2px 5px $dark-gray-color,inset -3px -3px 7px $medium-gray-color;
-  }
+  color: $white-color;
+  background-color: $dark-color;
+  border-color: $dark-color;
+  box-shadow: inset 2px 2px 5px $dark-gray-color,
+    inset -3px -3px 7px $medium-gray-color;
+}
 
 
 </style>

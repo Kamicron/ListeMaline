@@ -15,14 +15,15 @@ export interface Category {
   name: string;
 }
 
+export interface IFontAwesomeIcon {
+  position: IconPosition;
+  iconCode: string;
+  size: number;
+}
 
 export interface IButton {
   display: string;
-  icon?: {
-    position: IconPosition;
-    iconCode: string;
-    size: number;
-  }
+  icon?: IFontAwesomeIcon
 }
 
 export interface IInput {
@@ -30,7 +31,8 @@ export interface IInput {
   color: Theme;
   placeholder: string;
   label?: string;
-  error?: string
+  error?: string;
+  icon?: IFontAwesomeIcon;
 }
 
 export interface Message {

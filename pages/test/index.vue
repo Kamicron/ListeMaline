@@ -1,10 +1,11 @@
 <template>
   <div class="wrapper">
-    <!-- <ButtonMainButton :button="buttonUp"/>
+    <ButtonMainButton :button="buttonUp"/>
     <ButtonMainButton :button="buttonDown"/>
     <ButtonMainButton :button="buttonLeft"/>
-    <ButtonMainButton :button="buttonRight"/> -->
+    <ButtonMainButton :button="buttonRight"/>
     <InputLMInput v-model="inputTest" :properties="propsTest" />
+    <InputLMInputLogo v-model="inputTest" :properties="propsTest" />
     <p>inputTest : {{ inputValue }}</p>
       </div>
 </template>
@@ -57,7 +58,13 @@ const propsTest = ref<IInput>({
   type:TypeInput.TEXT, 
   color:Theme.DARK,
   label: 'Prénom',
-  error: "Ceci est un message d'erreur"
+  error: "Ceci est un message d'erreur",
+  icon: {
+    size: 18,
+    position: IconPosition.RIGHT, 
+    iconCode: "fa-duotone fa-house", 
+
+  }
 })
 
 const inputTest = ref("coucou")
@@ -72,6 +79,9 @@ const inputValue = computed({
 <style lang='scss' scoped>
     .wrapper {
       margin: 50px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
 
     }
 </style>
