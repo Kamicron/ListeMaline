@@ -1,41 +1,27 @@
 <template>
-  <div class="LM_Input">
-    <p
-      class="LM_Input__label"
-      :class="store.isDark ? 'dark-label' : 'white-label'"
-      v-if="properties?.label"
+  <div class="input_logo">
+    <div class="input_logo__container" :class="[
+        store.isDark ? 'container_dark-theme' : 'white-theme',
+        properties?.icon?.position === IconPosition.RIGHT
+          ? 'right-icon'
+          : 'left-icon',
+      ]"
     >
-      {{ properties.label }}
-    </p>
-    <div class="LM_Input__container" 
-      :class="[
-          store.isDark ? 'dark-theme' : 'white-theme',
-          properties?.icon?.position === IconPosition.RIGHT ? 'right-icon' : 'left-icon'
-        ]">
-      <div 
-        class="LM_Input__container--icon"
+      <div
+        class="input_logo__container--icon"
         :class="[
-            store.isDark ? 'dark-theme' : 'white-theme',
-            properties?.icon?.position === IconPosition.RIGHT ? 'no-border-left' : 'no-border-right'
-          ]">
+          store.isDark ? 'dark-theme' : 'white-theme',
+          properties?.icon?.position === IconPosition.RIGHT
+            ? 'no-border-left'
+            : 'no-border-right',
+        ]"
+      >
         <i v-if="properties?.icon" :class="properties.icon?.iconCode" :style="`font-size: ${properties.icon.size}px;`"></i>
       </div>
-      <input
-        :placeholder="properties?.placeholder"
-        :value="modelValue"
-        class="LM_Input__container--input"
-        :class="[store.isDark ? 'dark-theme' : 'white-theme', properties?.icon?.position === IconPosition.RIGHT ? 'no-border-right' : 'no-border-left']"
-        :type="properties?.type"
-        @input="handleInput"
-      />
+      <InputLMInputBase :class="properties?.icon?.position === IconPosition.RIGHT
+            ? 'no-border-left'
+            : 'no-border-right'" v-model="vModel" :properties="properties" />
     </div>
-    <p
-      class="LM_Input__error nunito-important"
-      :class="store.isDark ? 'dark-label' : 'white-label'"
-      v-if="properties?.error"
-    >
-      {{ properties.error }}
-    </p>
   </div>
 </template>
 
@@ -47,27 +33,29 @@ import { IInput } from "@/types/global";
 const props = defineProps({
   modelValue: { type: String, required: true },
   properties: { type: Object as PropType<IInput> },
-
-  // properties: {
-  //   label: { type: String, required: true },
-  //   placeholder: { type: String, default: '' },
-  //   error: { type: String, default: '' },
-  // }
 });
 
 const emit = defineEmits(["update:modelValue"]);
 
-const handleInput = (event: any) => {
-  emit("update:modelValue", event.target.value);
-};
+const vModel = ref<string>(props.modelValue);
+
+watch(
+  () => vModel.value,
+  (newVal) => {
+    emit("update:modelValue", newVal);
+  }
+);
+
+// const handleInput = (event: any) => {
+//   emit("update:modelValue", event.target.value);
+// };
 </script>
 
 <style lang="scss" scoped>
-.LM_Input {
+.input_logo {
   &__label {
     color: $dark-color;
     margin: 5px 10px;
-    
   }
 
   .dark-label {
@@ -78,7 +66,7 @@ const handleInput = (event: any) => {
   }
 
   &__container {
-    box-shadow: inset 2px 2px 5px $dark-neu,inset -3px -3px 7px $light-neu;
+    box-shadow: inset 2px 2px 5px $dark-neu, inset -3px -3px 7px $light-neu;
     border-radius: 0.55rem;
 
     display: flex;
@@ -89,9 +77,9 @@ const handleInput = (event: any) => {
       padding: 10px;
       color: $dark-color;
       background-color: $white-color;
-      border: .0625rem solid $gray-neu;
-      border-radius: .55rem;
-      transition: all .3s ease-in-out;
+      border: 0.0625rem solid $gray-neu;
+      border-radius: 0.55rem;
+      transition: all 0.3s ease-in-out;
     }
 
     &--input {
@@ -120,11 +108,13 @@ const handleInput = (event: any) => {
   }
 
   .no-border-right {
-    border-top-right-radius: 0; border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
   }
 
   .no-border-left {
-    border-top-left-radius: 0; border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 
   &__error {
@@ -134,13 +124,25 @@ const handleInput = (event: any) => {
 }
 
 .dark-theme {
-  color: $white-color;
-  background-color: $dark-color;
-  border-color: $dark-color;
-  box-shadow: inset 2px 2px 5px $dark-gray-color,
-    inset -3px -3px 7px $medium-gray-color;
+    color: $white-color;
+    background-color: $dark-color;
+    border: 0.0625rem solid $dark-color;;
 }
 
 
+.container_dark-theme {
+  box-shadow: 
+  inset 2px 2px 5px $dark-gray-color, 
+  inset -3px -3px 7px $medium-gray-color;
+}
 
+.input_logo .no-border-left::v-deep .input_base__input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.input_logo .no-border-right::v-deep .input_base__input {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
 </style>

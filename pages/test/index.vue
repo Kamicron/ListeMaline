@@ -1,11 +1,11 @@
 <template>
   <div class="wrapper">
-    <ButtonMainButton :button="buttonUp"/>
+    <!-- <ButtonMainButton :button="buttonUp"/>
     <ButtonMainButton :button="buttonDown"/>
     <ButtonMainButton :button="buttonLeft"/>
-    <ButtonMainButton :button="buttonRight"/>
-    <InputLMInput v-model="inputTest" :properties="propsTest" />
-    <InputLMInputLogo v-model="inputTest" :properties="propsTest" />
+    <ButtonMainButton :button="buttonRight"/> -->
+    <InputLMInput v-model="inputTest1" :properties="propsTest1" />
+    <InputLMInput v-model="inputTest1" :properties="propsTest2" />
     <p>inputTest : {{ inputValue }}</p>
       </div>
 </template>
@@ -53,7 +53,15 @@ const buttonDown = ref<IButton>({
   }
 })
 
-const propsTest = ref<IInput>({
+const propsTest1 = ref<IInput>({
+  placeholder:"test", 
+  type:TypeInput.TEXT, 
+  color:Theme.DARK,
+  label: 'Prénom',
+  error: "Ceci est un message d'erreur",
+})
+
+const propsTest2 = ref<IInput>({
   placeholder:"test", 
   type:TypeInput.TEXT, 
   color:Theme.DARK,
@@ -61,17 +69,17 @@ const propsTest = ref<IInput>({
   error: "Ceci est un message d'erreur",
   icon: {
     size: 18,
-    position: IconPosition.RIGHT, 
+    position: IconPosition.LEFT, 
     iconCode: "fa-duotone fa-house", 
 
   }
 })
 
-const inputTest = ref("coucou")
+const inputTest1 = ref("coucou")
 
 const inputValue = computed({
-  get: () => inputTest.value,
-  set: (value) => { inputTest.value = value }
+  get: () => inputTest1.value,
+  set: (value) => { inputTest1.value = value }
 })
   
 </script>
