@@ -2,7 +2,7 @@
   <div class="layout">
     <HeaderLMHeader/>
     <NuxtPage/>
-    From A: {{ store.isDark }}  </div>
+  </div>
 </template>
 
 <script setup lang="ts">

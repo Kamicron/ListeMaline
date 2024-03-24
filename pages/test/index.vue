@@ -7,7 +7,11 @@
     <InputLMInput v-model="inputTest1" :properties="propsTest1" />
     <InputLMInput v-model="inputTest1" :properties="propsTest2" />
     <p>inputTest : {{ inputValue }}</p>
-      </div>
+    <CardsProducts>
+      <h2>titre</h2>
+      <p>Coucou</p>
+    </CardsProducts>
+  </div>
 </template>
 
 <script setup lang='ts'>

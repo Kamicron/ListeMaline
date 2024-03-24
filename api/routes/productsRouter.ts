@@ -8,9 +8,9 @@ router.get('/', async (req, res) => {
     const connection = getConnection(); 
 
     const [rows]: any[] = await connection.query(`
-      SELECT p.*, JSON_OBJECT('category_id', c.id, 'category_name', c.name) AS categorie
+      SELECT p.*, JSON_OBJECT('id', c.id, 'name', c.name, 'icon', c.icon) AS category
       FROM products p
-      JOIN categories c ON p.category_id = c.id
+      JOIN categories c ON p.category_id = c.id;
     `);
 
     res.json(rows);

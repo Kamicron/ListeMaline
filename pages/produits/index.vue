@@ -10,12 +10,7 @@
     </select>
     <!-- Liste des produits -->
     <div class="product-list">
-      <div v-for="product in filteredProducts" :key="product.id" class="product-card">
-        <h2>{{ product.name }}</h2>
-        <h3>{{ product.categorie.category_name }}</h3> <!-- Utilisez product.categorie.category_name -->
-        <p>{{ product.description }}</p>
-        <p>{{ product.price }} €</p>
-      </div>
+      <CardsProducts  v-for="product in filteredProducts" :key="product.id" :product="product"/>
     </div>
   </div>
 </template>
@@ -46,6 +41,8 @@ const products = ref<Product[]>([]);
 onMounted(async () => {
   try {
     products.value = await productService.getAllProducts();
+    console.log('products.value', products.value);
+    
   } catch (error) {
     console.error('Erreur lors de la récupération des produits : ', error);
   }
@@ -56,6 +53,8 @@ const categories = ref<Category[]>([]);
 onMounted(async () => {
   try {
     categories.value = await categoryService.getAllCategories();
+    console.log('categories.value', categories.value);
+    
   } catch (error) {
     console.error('Erreur lors de la récupération des catégories : ', error);
   }
@@ -67,6 +66,7 @@ onMounted(async () => {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  margin: 20px 0;
 }
 
 .product-card {

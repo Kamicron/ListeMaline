@@ -73,12 +73,12 @@ const handleInput = (event: any) => {
   }
 
   .dark-theme {
-  color: $white-color;
-  background-color: $dark-color;
-  border-color: $dark-color;
-  box-shadow: inset 2px 2px 5px $dark-gray-color,
+    color: $white-color;
+    background-color: $dark-color;
+    border-color: $dark-color;
+    box-shadow: inset 2px 2px 5px $dark-gray-color,
     inset -3px -3px 7px $medium-gray-color;
-}
+  }
 
 
 </style>
