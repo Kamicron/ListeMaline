@@ -30,7 +30,7 @@
 <script setup lang='ts'>
 import { authService } from '@/api/services/authService';
 import { Theme, TypeInput } from '@/assets/enum/global';
-import { IInput } from '@/types/global';
+import { IButton, IInput } from '@/types/global';
 import { store } from '@/store/index'
 
 
@@ -40,7 +40,6 @@ let email = '';
 let password = '';
 
 const inputName = ref<IInput>({
-  value: email, 
   placeholder:"Nom De Famille", 
   type:TypeInput.TEXT, 
   color:Theme.DARK,
@@ -49,7 +48,6 @@ const inputName = ref<IInput>({
 })
 
 const inputEmail = ref<IInput>({
-  value: email, 
   placeholder:"utilisateur@herbergeur.fr", 
   type:TypeInput.EMAIL, 
   color:Theme.DARK,
@@ -58,7 +56,6 @@ const inputEmail = ref<IInput>({
 })
 
 const inputPassword = ref<IInput>({
-  value: password, 
   placeholder:"test25!!", 
   type:TypeInput.PASSWORD, 
   color:Theme.DARK,
@@ -66,7 +63,7 @@ const inputPassword = ref<IInput>({
   // error: "Ceci est un message d'erreur"
 })
 
-const buttonSubscribe = ref<IButton>({display:"S'inscrire", color:Theme.DARK})
+const buttonSubscribe = ref<IButton>({display:"S'inscrire"})
 
 const handleRegister = async () => {
   await authService.register(name, email, password);

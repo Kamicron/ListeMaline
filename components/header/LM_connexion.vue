@@ -23,7 +23,7 @@
 <script setup lang='ts'>
 import { authService } from '@/api/services/authService';
 import { store } from '@/store/index'
-import Alert from '@/components/global/alert/alert.vue';
+// import Alert from '@/components/global/alert/alert.vue';
 import { IconPosition, MessageValidation, Theme, TypeInput } from '@/assets/enum/global';
 import { IButton, IInput } from '@/types/global';
 
@@ -32,8 +32,12 @@ const alertRef = ref<any>(null);
 let name = '';
 let password = '';
 
-const showMessageAlert = (status: MessageValidation.SUCCESS | MessageValidation.ERROR, message: string) => {
-  alertRef.value?.addMessage(status, message);
+const showMessageAlert = (status: MessageValidation, message: string) => {
+  if (alertRef.value) {
+    alertRef.value.addMessage(status, message);
+  } else {
+    console.error("La référence d'alerte n'est pas définie.");
+  }
 }
 
 const buttonConnexion = ref<IButton>({ display: "Se connecter" })
@@ -83,13 +87,13 @@ const handleLogin = async () => {
     showMessageAlert(MessageValidation.SUCCESS, "Connexion réussis")
 
     // Mettre à jour l'access token dans le store
-    store.accessToken = accessToken;
+    store.accessToken = accessToken; 
   } catch (error) {
     console.error('Erreur lors de la connexion : ', error);
-    inputPassword.value.error.display = "Identifiants ou mot de passe incorrrect"
-    inputName.value.error.display = "Identifiants ou mot de passe incorrrect"
-    showMessageAlert(MessageValidation.ERROR, error.toString())
-
+    inputPassword.value.error ? inputPassword.value.error.display = "Identifiants ou mot de passe incorrrect" : inputPassword.value.error = undefined
+    inputName.value.error ? inputName.value.error.display = "Identifiants ou mot de passe incorrrect" : inputName.value.error = undefined
+    const errorMessage = error ? error.toString() : "Une erreur inconnue s'est produite.";
+    showMessageAlert(MessageValidation.ERROR, errorMessage);
     // Gérer l'erreur si nécessaire
   }
 };

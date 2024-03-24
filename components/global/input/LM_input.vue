@@ -28,7 +28,7 @@ const vModel = ref<string>(props.modelValue);
 watch(
   () => vModel.value,
   (newVal, oldVal) => {
-    if (props.properties.error && props.properties.error.display && newVal !== oldVal) {
+    if (props.properties?.error && props.properties.error.display && newVal !== oldVal) {
       props.properties.error.display = "";
     }
     emit("update:modelValue", newVal);
