@@ -21,8 +21,8 @@ const props = defineProps({
 const flexClasses = {
   [IconPosition.UP]: 'flex-direction: column-reverse;',
   [IconPosition.DOWN]: 'flex-direction: column;',
-  [IconPosition.RIGHT]: 'flex-direction: row-reverse;',
-  [IconPosition.LEFT]: 'flex-direction: row;'
+  [IconPosition.RIGHT]: 'flex-direction: row;',
+  [IconPosition.LEFT]: 'flex-direction: row-reverse;'
 };
 
 const flexClass = props.button.icon ? flexClasses[props.button.icon.position] : '';

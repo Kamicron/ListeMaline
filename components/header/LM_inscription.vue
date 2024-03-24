@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Inscription</h1>
-    <form @submit.prevent="handleRegister">
+    <form v-if="!store.accessToken" @submit.prevent="handleRegister">
       <div>
         <InputLMInput :input="inputName" />
 
@@ -31,6 +31,8 @@
 import { authService } from '@/api/services/authService';
 import { Theme, TypeInput } from '@/assets/enum/global';
 import { IInput } from '@/types/global';
+import { store } from '@/store/index'
+
 
 
 let name = '';

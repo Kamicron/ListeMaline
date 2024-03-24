@@ -1,9 +1,9 @@
 <template>
   <div class="wrapper">
-    <!-- <ButtonMainButton :button="buttonUp"/>
+    <ButtonMainButton :button="buttonUp"/>
     <ButtonMainButton :button="buttonDown"/>
     <ButtonMainButton :button="buttonLeft"/>
-    <ButtonMainButton :button="buttonRight"/> -->
+    <ButtonMainButton :button="buttonRight"/>
     <InputLMInput v-model="inputTest1" :properties="propsTest1" />
     <InputLMInput v-model="inputTest1" :properties="propsTest2" />
     <p>inputTest : {{ inputValue }}</p>

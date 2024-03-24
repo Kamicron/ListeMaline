@@ -1,7 +1,6 @@
 <template>
   <div>
     <Alert ref="alertRef" />
-    <p>token : {{ store.accessToken }}</p>
     <div v-if="store.accessToken === null">
       <h1>Connexion</h1>
       <div>
@@ -14,9 +13,10 @@
       <button type="submit">Se connecter</button>
     </div>
     <div v-else>
-      <h1>Déconnexion</h1>
-      <button @click="handleLogout">Se déconnecter</button>
+      <ButtonMainButton :button="buttonDeconnexion" @click="handleLogout"/>
     </div>
+    <p>token : {{ store.accessToken }}</p>
+
   </div>
 </template>
 
@@ -24,7 +24,7 @@
 import { authService } from '@/api/services/authService';
 import { store } from '@/store/index'
 import Alert from '@/components/global/alert/alert.vue';
-import { MessageValidation, Theme, TypeInput } from '@/assets/enum/global';
+import { IconPosition, MessageValidation, Theme, TypeInput } from '@/assets/enum/global';
 import { IButton, IInput } from '@/types/global';
 
 const alertRef = ref<any>(null);
@@ -48,17 +48,27 @@ const inputName = ref<IInput>({
     enable: true
   }})
 
-const valueName = ref('')
-const valuePassword = ref('')
-
-const inputPassword = ref<IInput>({
-  placeholder: "test25!!",
-  type: TypeInput.PASSWORD,
-  color: Theme.DARK,
+  const inputPassword = ref<IInput>({
+    placeholder: "test25!!",
+    type: TypeInput.PASSWORD,
+    color: Theme.DARK,
   label: 'Mot de passe',
   error: {
     display: "",
     enable: true
+  }
+})
+
+
+const valueName = ref('')
+const valuePassword = ref('')
+
+const buttonDeconnexion = ref<IButton>({
+  display:'Déconnexion', 
+  icon: {
+    position: IconPosition.RIGHT, 
+    iconCode: "fa-duotone fa-power-off", 
+    size: 30, 
   }
 })
 
