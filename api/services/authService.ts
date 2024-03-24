@@ -51,5 +51,30 @@
         console.error('Erreur lors de l\'inscription : ', error);
         throw new Error('Erreur lors de l\'inscription : ' + error.message);
       }
+    },
+
+    async getUserDetails(accessToken: string): Promise<User> {
+      try {
+        const response = await fetch('http://localhost:3001/api/users/details', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des détails de l\'utilisateur');
+        }
+        
+        const data = await response.json();
+        return {
+          name: data.name,
+          email: data.email,
+          // Ajoute d'autres champs si nécessaire
+        };
+      } catch (error) {
+        console.error('Erreur lors de la récupération des détails de l\'utilisateur : ', error);
+        throw new Error('Erreur lors de la récupération des détails de l\'utilisateur : ' + error.message);
+      }
     }
   };

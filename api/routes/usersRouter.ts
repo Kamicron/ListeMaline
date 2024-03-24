@@ -4,6 +4,7 @@ const app = express()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 import { getConnection } from '../config/db';
+import { authService } from '../services/authService';
 
 
 // api/routes/test.ts
@@ -18,10 +19,38 @@ router.get('/test', async (req, res) => { // Changez la route de '/test' à '/'
 });
 
 
-router.get('/loginTest', async (req, res) => { // Changez la route de '/test' à '/'
-  console.log('test');
-  res.send('test venant de api/test/test');
+router.get('/details', async (req, res) => {
+  const connection = getConnection();
+
+  const accessToken = req.headers.authorization?.split(' ')[1]; // Récupère l'accessToken depuis les headers
+  if (!accessToken) {
+    return res.status(401).json({ error: 'Authorization header missing' });
+  }
+
+  try {
+    const decodedToken = jwt.decode(accessToken);
+
+    const [rows, fields] = await connection.execute('SELECT * FROM users WHERE id = ?', [decodedToken.id]);
+    
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Récupération des détails de l'utilisateur à partir de la première ligne du résultat
+    const userDetails = {
+      id: rows[0].id,
+      name: rows[0].name,
+      email: rows[0].email,
+      // Ajoutez d'autres champs si nécessaire
+    };
+
+    res.json(userDetails);
+  } catch (error) {
+    console.error('Error retrieving user details:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
+
 
 router.post('/login', async (req, res) => {
   const connection = getConnection();

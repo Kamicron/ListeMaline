@@ -1,24 +1,6 @@
 <template>
   <div>
-    <h1>Liste des produits</h1>
-    <!-- Recherche par nom -->
-    <input type="text" v-model="searchName" placeholder="Rechercher par nom" />
-    <!-- Recherche par catégorie -->
-    <select v-model="searchCategory">
-      <option value="">Toutes les catégories</option>
-      <option v-for="category in categories" :value="category.id" :key="category.id">{{ category.name }}</option>
-    </select>
-    <!-- Liste des produits -->
-    <div class="product-list">
-      <div v-for="product in filteredProducts" :key="product.id" class="product-card">
-        <h2>{{ product.name }}</h2>
-        <h3>{{ product.categorie.category_name }}</h3> <!-- Utilisez product.categorie.category_name -->
-        <p>{{ product.description }}</p>
-        <p>{{ product.price }} €</p>
-      </div>
-    </div>
 
-    <ButtonMainButton :buttonTest="buttonTest"/>
   </div>
 </template>
 

@@ -6,8 +6,8 @@ GET http://localhost:3001/api/users/test
 
 ###
 
-GET http://localhost:3001/api/users/loginTest
-
+GET http://localhost:3001/api/users/details
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6ImthbWkiLCJpYXQiOjE3MTEyODg1MzgsImV4cCI6MTcxMTI4OTQzOH0.nthGRxIR74_Iv39GxHQJj3kYaEpmDqRlefwmhmwozQc
 ###
 
 POST http://localhost:3001/api/users/login

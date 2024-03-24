@@ -10,13 +10,11 @@
         <InputLMInput v-model="valuePassword" :properties="inputPassword" />
       </div>
       <ButtonMainButton :button="buttonConnexion" @click="handleLogin" />
-      <button type="submit">Se connecter</button>
     </div>
     <div v-else>
       <ButtonMainButton :button="buttonDeconnexion" @click="handleLogout"/>
     </div>
-    <p>token : {{ store.accessToken }}</p>
-
+    <h1 v-if="store.user">Bonjour {{ store.user?.name }}</h1>
   </div>
 </template>
 
@@ -87,7 +85,8 @@ const handleLogin = async () => {
     showMessageAlert(MessageValidation.SUCCESS, "Connexion réussis")
 
     // Mettre à jour l'access token dans le store
-    store.accessToken = accessToken; 
+    store.accessToken = accessToken;
+    store.user = await authService.getUserDetails(accessToken) 
   } catch (error) {
     console.error('Erreur lors de la connexion : ', error);
     inputPassword.value.error ? inputPassword.value.error.display = "Identifiants ou mot de passe incorrrect" : inputPassword.value.error = undefined
@@ -102,6 +101,7 @@ const isLogged = ref<boolean>(false)
 
 const handleLogout = async () => {
   store.accessToken = null
+  store.user = null
   // await authService.logout();
 };
 

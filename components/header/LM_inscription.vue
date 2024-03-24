@@ -1,21 +1,20 @@
 <template>
   <div>
-    <h1>Inscription</h1>
     <form v-if="!store.accessToken" @submit.prevent="handleRegister">
       <div>
-        <InputLMInput :input="inputName" />
+        <InputLMInput v-model="name" :properties="inputName" />
 
         <!-- <label for="name">Nom :</label>
         <input type="text" id="name" v-model="name" /> -->
       </div>
       <div>
-        <InputLMInput :input="inputEmail" />
+        <InputLMInput  v-model="email" :properties="inputEmail" />
 
         <!-- <label for="email">Email :</label>
         <input type="email" id="email" v-model="email" /> -->
       </div>
       <div>
-        <InputLMInput :input="inputPassword" />
+        <InputLMInput v-model="password" :properties="inputPassword" />
 
         <!-- <label for="password">Mot de passe :</label>
         <input type="password" id="password" v-model="password" /> -->
