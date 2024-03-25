@@ -68,6 +68,7 @@
         
         const data = await response.json();
         return {
+          id: data.id,
           name: data.name,
           email: data.email,
           // Ajoute d'autres champs si nécessaire

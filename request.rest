@@ -19,6 +19,7 @@ Content-Type: application/json
 }
 
 ###
+@token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6ImthbWkiLCJpYXQiOjE3MTEzODk4NDUsImV4cCI6MTcxMTM5MDc0NX0.vyZdkWPsNC7acJHejG4NSxjvaM64z-hL2bjLrUk7lgc
 
 POST http://localhost:3001/api/users/register
 Content-Type: application/json
@@ -41,5 +42,9 @@ Content-Type: application/json
 ###
 
 GET http://localhost:3001/api/carts/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6ImthbWkiLCJpYXQiOjE3MTEzNjk0MjgsImV4cCI6MTcxMTM3MDMyOH0.yEtafZqPqOU5HmQkimNk9Eglr7u7w4vOZP18A-wPfW8
+Authorization: Bearer {{token}}
+###
+
+GET http://localhost:3001/api/carts/me
+Authorization: Bearer {{token}}
 ###

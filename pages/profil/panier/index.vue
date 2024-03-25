@@ -1,23 +1,21 @@
 <template>
   <div class="cart-container">
     <h2>Panier</h2>
-    <div v-for="cart in userCarts" :key="cart.cart_id" class="cart">
-      <div v-if="!cart.is_soft_reset" class="cart-info">
+    <div v-for="cart in userCarts" :key="cart.cart_id">
+      <CardsGeneral v-if="!cart.is_soft_reset" >
         <p><strong>Nom du panier:</strong> {{ cart.cart_name }}</p>
         <p><strong>Date de création:</strong> {{ cart.date_created }}</p>
         <p><strong>Produits:</strong></p>
         <ul class="product-list">
-          <li v-for="product in cart.products" :key="product.id" class="product-item">
-            <span>{{ product.name }}</span> - Quantité: {{ product.quantity }}
-          </li>
+          <CardsProducts  v-for="product in cart.products" :key="product.id" :product="product"/>
         </ul>
         <p><strong>Utilisateurs partageant le panier:</strong></p>
         <ul class="shared-users">
-          <li v-for="userId in cart.shared_user_ids" :key="userId" class="shared-user">
-            ID Utilisateur: {{ userId }}
+          <li v-for="user in cart.shared_users" :key="userId" class="shared-user">
+            {{ user.name }}
           </li>
         </ul>
-      </div>
+      </CardsGeneral>
     </div>
   </div>
 </template>
@@ -34,7 +32,7 @@ const userCarts = ref([]);
 async function displayUserCarts() {
   try {
     const carts = await cartService.getUserCarts(store.accessToken);
-    console.log('Paniers de l\'utilisateur : ', carts);
+    console.log('test : ', carts);
     userCarts.value = carts; // Met à jour la référence reactive avec les paniers récupérés
   } catch (error) {
     console.error('Erreur lors de l\'affichage des paniers de l\'utilisateur : ', error);
@@ -63,6 +61,10 @@ displayUserCarts();
 .product-list {
   list-style: none;
   padding-left: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin: 10px;
 }
 
 .product-item {

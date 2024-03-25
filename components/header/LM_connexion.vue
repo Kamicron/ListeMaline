@@ -12,9 +12,12 @@
       <ButtonMainButton :button="buttonConnexion" @click="handleLogin" />
     </div>
     <div v-else>
-      <ButtonMainButton :button="buttonDeconnexion" @click="handleLogout"/>
+      <ButtonMainButton :button="buttonDeconnexion" @click="handleLogout" />
     </div>
-    <h1 v-if="store.user">Bonjour {{ store.user?.name }}</h1>
+    <div v-if="store.user">
+      <h1>Bonjour {{ store.user?.name }}</h1>
+      <pre>store: {{ store }}</pre>
+    </div>
   </div>
 </template>
 
@@ -48,12 +51,13 @@ const inputName = ref<IInput>({
   error: {
     display: "",
     enable: true
-  }})
+  }
+})
 
-  const inputPassword = ref<IInput>({
-    placeholder: "test25!!",
-    type: TypeInput.PASSWORD,
-    color: Theme.DARK,
+const inputPassword = ref<IInput>({
+  placeholder: "test25!!",
+  type: TypeInput.PASSWORD,
+  color: Theme.DARK,
   label: 'Mot de passe',
   error: {
     display: "",
@@ -66,11 +70,11 @@ const valueName = ref('')
 const valuePassword = ref('')
 
 const buttonDeconnexion = ref<IButton>({
-  display:'Déconnexion', 
+  display: 'Déconnexion',
   icon: {
-    position: IconPosition.RIGHT, 
-    iconCode: "fa-duotone fa-power-off", 
-    size: 30, 
+    position: IconPosition.RIGHT,
+    iconCode: "fa-duotone fa-power-off",
+    size: 30,
   }
 })
 
@@ -78,15 +82,15 @@ const handleLogin = async () => {
   try {
     console.log('initialisation');
     console.log('name', valueName);
-    console.log('password', valuePassword );
-    
+    console.log('password', valuePassword);
+
     const accessToken = await authService.login(valueName.value, valuePassword.value);
     console.log("fin envois");
     showMessageAlert(MessageValidation.SUCCESS, "Connexion réussis")
 
     // Mettre à jour l'access token dans le store
     store.accessToken = accessToken;
-    store.user = await authService.getUserDetails(accessToken) 
+    store.user = await authService.getUserDetails(accessToken)
   } catch (error) {
     console.error('Erreur lors de la connexion : ', error);
     inputPassword.value.error ? inputPassword.value.error.display = "Identifiants ou mot de passe incorrrect" : inputPassword.value.error = undefined

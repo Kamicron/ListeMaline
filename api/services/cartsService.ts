@@ -6,7 +6,7 @@ const API_URL = 'http://localhost:3001/api/carts';
 export const cartService = {
   async getUserCarts(accessToken: string): Promise<User> {
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch(API_URL+'/me', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${accessToken}`
