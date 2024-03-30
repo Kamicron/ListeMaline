@@ -24,5 +24,25 @@ export const cartService = {
       throw error;
     }
   },
+
+  async addProductToCart(productId: number, cartId: number, accessToken: string): Promise<void> {
+    try {
+      const response = await axios.post(`${API_URL}/add-product`, {
+        productId,
+        cartId
+      }, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+
+      if (response.status !== 200) {
+        throw new Error('Erreur lors de l\'ajout du produit au panier');
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout du produit au panier : ', error);
+      throw error;
+    }
+  },
 };
 

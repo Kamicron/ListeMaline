@@ -9,6 +9,9 @@
       <p class="product-cards__product--text">{{ product.description }}</p>
       <p class="product-cards__product--text">{{ product.price }} €</p>
     </div>
+    <p class="product-cards__product--text" v-if="product.quantity">Quantité : {{ product.quantity }}</p>
+    <i class="fa-duotone fa-cart-plus" @click="emit('addProduct', product.id)"></i>
+    <i class="fa-duotone fa-cart-minus" @click="emit('removeProduct', product.id)" v-if="product.quantity"></i>
     <slot></slot>
   </div>
 </template>
@@ -21,6 +24,8 @@ import { PropType } from 'vue';
 const props = defineProps ({
   product: {type: Object as PropType<IProduct>, required: true}
 })
+
+const emit = defineEmits(['addProduct', 'removeProduct'])
 
 console.log('props.product', props.product);
 

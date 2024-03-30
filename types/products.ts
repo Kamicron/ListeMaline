@@ -11,4 +11,5 @@ export interface IProduct {
   description: string;
   price: string;
   user_id: number;
+  quantity?: number
 }

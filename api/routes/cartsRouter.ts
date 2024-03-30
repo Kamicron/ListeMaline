@@ -199,10 +199,22 @@ router.post('/add-product', async (req, res) => {
       return res.status(403).json({ error: 'Cart not found or does not belong to the user' });
     }
 
-    // Ajouter le produit au panier spécifié
-    await connection.query(`
-      INSERT INTO cart_items (cart_id, product_id, quantity) VALUES (?, ?, 1);
+    // Vérifier si le produit est déjà présent dans le panier
+    const [existingCartItem]: any[] = await connection.query(`
+      SELECT * FROM cart_items WHERE cart_id = ? AND product_id = ?;
     `, [cartId, productId]);
+
+    if (existingCartItem && existingCartItem.length > 0) {
+      // Si le produit existe déjà, incrémentez simplement la quantité
+      await connection.query(`
+        UPDATE cart_items SET quantity = quantity + 1 WHERE cart_id = ? AND product_id = ?;
+      `, [cartId, productId]);
+    } else {
+      // Sinon, ajoutez le produit au panier avec une quantité de 1
+      await connection.query(`
+        INSERT INTO cart_items (cart_id, product_id, quantity) VALUES (?, ?, 1);
+      `, [cartId, productId]);
+    }
 
     res.json({ success: true });
   } catch (error) {
@@ -210,6 +222,7 @@ router.post('/add-product', async (req, res) => {
     res.status(500).send('Erreur interne du serveur');
   }
 });
+
 
 
 
