@@ -223,6 +223,54 @@ router.post('/add-product', async (req, res) => {
   }
 });
 
+router.post('/remove-product', async (req, res) => {
+  try {
+    const { productId, cartId }: { productId: number, cartId: number } = req.body;
+    const accessToken = req.headers.authorization?.split(' ')[1];
+
+    if (!accessToken) {
+      return res.status(401).json({ error: 'Authorization header missing' });
+    }
+
+    const userId = jwt.decode(accessToken).id;
+    const connection = getConnection();
+
+    // Vérifier si le panier appartient à l'utilisateur
+    const [cart]: any[] = await connection.query(`
+      SELECT * FROM carts WHERE cart_id = ? AND user_id = ?;
+    `, [cartId, userId]);
+
+    if (!cart) {
+      return res.status(403).json({ error: 'Cart not found or does not belong to the user' });
+    }
+
+    // Vérifier si le produit est présent dans le panier
+    const [existingCartItem]: any[] = await connection.query(`
+      SELECT * FROM cart_items WHERE cart_id = ? AND product_id = ?;
+    `, [cartId, productId]);
+
+    if (!existingCartItem || existingCartItem.length === 0) {
+      return res.status(404).json({ error: 'Product not found in the cart' });
+    }
+
+    // Si la quantité du produit est supérieure à 1, décrémentez simplement la quantité
+    if (existingCartItem[0].quantity > 1) {
+      await connection.query(`
+        UPDATE cart_items SET quantity = quantity - 1 WHERE cart_id = ? AND product_id = ?;
+      `, [cartId, productId]);
+    } else {
+      // Sinon, supprimez le produit du panier
+      await connection.query(`
+        DELETE FROM cart_items WHERE cart_id = ? AND product_id = ?;
+      `, [cartId, productId]);
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Erreur lors de la suppression du produit du panier : ', error);
+    res.status(500).send('Erreur interne du serveur');
+  }
+});
 
 
 

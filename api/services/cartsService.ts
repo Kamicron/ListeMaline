@@ -44,5 +44,26 @@ export const cartService = {
       throw error;
     }
   },
+
+  async removeProductFromCart(productId: number, cartId: number, accessToken: string): Promise<void> {
+    try {
+      const response = await axios.post(`${API_URL}/remove-product`, {
+        productId,
+        cartId
+      }, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+  
+      if (response.status !== 200) {
+        throw new Error('Erreur lors de la suppression du produit du panier');
+      }
+    } catch (error) {
+      console.error('Erreur lors de la suppression du produit du panier : ', error);
+      throw error;
+    }
+  }
+  
 };
 

@@ -8,7 +8,7 @@
         <p><strong>Date de création:</strong> {{ cart.date_created }}</p>
         <p><strong>Produits:</strong></p>
         <ul class="product-list">
-          <CardsProducts  v-for="product in cart.products" :key="product.id" :product="product" @addProduct="addProduct($event, cart.cart_id)"/>
+          <CardsProducts  v-for="product in cart.products" :key="product.id" :product="product" @addProduct="addProduct($event, cart.cart_id)" @removeProduct="removeProduct($event, cart.cart_id)"/>
         </ul>
         <p><strong>Utilisateurs partageant le panier:</strong></p>
         <ul class="shared-users">
@@ -49,6 +49,16 @@ displayUserCarts();
 async function addProduct(productId: number, cartId: number) {
   try {
     await cartService.addProductToCart(productId, cartId, store.accessToken);
+    // Mettre à jour les paniers après l'ajout du produit
+    await displayUserCarts();
+  } catch (error) {
+    console.error('Erreur lors de l\'ajout du produit au panier : ', error);
+  }
+}
+
+async function removeProduct(productId: number, cartId: number) {
+  try {
+    await cartService.removeProductFromCart(productId, cartId, store.accessToken);
     // Mettre à jour les paniers après l'ajout du produit
     await displayUserCarts();
   } catch (error) {
