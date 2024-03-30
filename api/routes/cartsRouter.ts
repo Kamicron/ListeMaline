@@ -168,6 +168,48 @@ router.get('/me', async (req, res) => {
   }
 });
 
+router.post('/add-product', async (req, res) => {
+  try {
+    const { productId, cartId }: { productId: number, cartId: number } = req.body; // Récupérer l'identifiant du produit et l'identifiant du panier depuis le corps de la requête
+    const accessToken = req.headers.authorization?.split(' ')[1]; // Récupérer l'accessToken depuis les headers
+
+    if (!accessToken) {
+      return res.status(401).json({ error: 'Authorization header missing' });
+    }
+    
+    const userId = jwt.decode(accessToken).id;
+
+    const connection = getConnection(); 
+
+    // Vérifier si le produit existe
+    const [product]: any[] = await connection.query(`
+      SELECT * FROM products WHERE id = ?;
+    `, [productId]);
+
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    // Vérifier si le panier appartient à l'utilisateur
+    const [cart]: any[] = await connection.query(`
+      SELECT * FROM carts WHERE cart_id = ? AND user_id = ?;
+    `, [cartId, userId]);
+
+    if (!cart) {
+      return res.status(403).json({ error: 'Cart not found or does not belong to the user' });
+    }
+
+    // Ajouter le produit au panier spécifié
+    await connection.query(`
+      INSERT INTO cart_items (cart_id, product_id, quantity) VALUES (?, ?, 1);
+    `, [cartId, productId]);
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Erreur lors de l\'ajout du produit au panier : ', error);
+    res.status(500).send('Erreur interne du serveur');
+  }
+});
 
 
 

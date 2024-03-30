@@ -48,3 +48,17 @@ Authorization: Bearer {{token}}
 GET http://localhost:3001/api/carts/me
 Authorization: Bearer {{token}}
 ###
+
+@productId=2
+@cartId=1
+POST http://localhost:3001/api/carts/add-product
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "productId": {{productId}},
+  "cartId": {{cartId}}
+}
+
+
+###
