@@ -272,6 +272,77 @@ router.post('/remove-product', async (req, res) => {
   }
 });
 
+router.post('/create-cart', async (req, res) => {
+  try {
+    const { cartName }: { cartName: string } = req.body; // Récupérer le nom du panier depuis le corps de la requête
+    const accessToken = req.headers.authorization?.split(' ')[1]; // Récupérer l'accessToken depuis les headers
+
+    if (!accessToken) {
+      return res.status(401).json({ error: 'Authorization header missing' });
+    }
+
+    const userId = jwt.decode(accessToken).id; // Récupérer l'ID de l'utilisateur à partir du token d'authentification
+
+    const connection = getConnection();
+
+    // Insérer le nouveau panier dans la table carts
+    const [insertedCart]: any[] = await connection.query(`
+      INSERT INTO carts (user_id, cart_name, date_created) VALUES (?, ?, NOW());
+    `, [userId, cartName]);
+
+    const cartId = insertedCart.insertId; // Récupérer l'ID du panier nouvellement créé
+
+    // Insérer une entrée dans la table user_cart pour relier l'utilisateur au nouveau panier
+    await connection.query(`
+      INSERT INTO user_cart (user_id, cart_id) VALUES (?, ?);
+    `, [userId, cartId]);
+
+    res.json({ success: true, cartId }); // Renvoyer une réponse JSON indiquant le succès de la création du panier et l'ID du nouveau panier
+  } catch (error) {
+    console.error('Erreur lors de la création du panier : ', error);
+    res.status(500).send('Erreur interne du serveur');
+  }
+});
+
+
+router.post('/reset-cart', async (req, res) => {
+  try {
+    const { cartId }: { cartId: number } = req.body; // Récupérer l'ID du panier depuis le corps de la requête
+    const accessToken = req.headers.authorization?.split(' ')[1]; // Récupérer l'accessToken depuis les headers
+
+    if (!accessToken) {
+      return res.status(401).json({ error: 'Authorization header missing' });
+    }
+
+    const userId = jwt.decode(accessToken).id; // Récupérer l'ID de l'utilisateur à partir du token d'authentification
+
+    const connection = getConnection();
+
+    // Vérifier si le panier appartient à l'utilisateur
+    const [cart]: any[] = await connection.query(`
+      SELECT * FROM carts WHERE cart_id = ? AND user_id = ?;
+    `, [cartId, userId]);
+
+    if (!cart) {
+      return res.status(403).json({ error: 'Cart not found or does not belong to the user' });
+    }
+
+    // Effectuer la suppression douce (soft reset) du panier en supprimant les entrées correspondantes dans d'autres tables
+    await connection.query(`
+      DELETE FROM cart_items WHERE cart_id = ?;
+    `, [cartId]);
+
+    // Mettre à jour la colonne is_soft_reset du panier à true pour indiquer qu'il a été réinitialisé doucement
+    await connection.query(`
+      UPDATE carts SET is_soft_reset = 1 WHERE cart_id = ?;
+    `, [cartId]);
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Erreur lors de la suppression douce du panier : ', error);
+    res.status(500).send('Erreur interne du serveur');
+  }
+});
 
 
 export default router;

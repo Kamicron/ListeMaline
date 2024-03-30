@@ -1,10 +1,11 @@
 // services/cartService.ts
+import { ICart } from '@/types/cart';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:3001/api/carts';
 
 export const cartService = {
-  async getUserCarts(accessToken: string): Promise<User> {
+  async getUserCarts(accessToken: string): Promise<ICart[]> {
     try {
       const response = await fetch(API_URL+'/me', {
         method: 'GET',
@@ -63,7 +64,49 @@ export const cartService = {
       console.error('Erreur lors de la suppression du produit du panier : ', error);
       throw error;
     }
+  },
+
+  async createCart(cartName: string, accessToken: string): Promise<number> {
+    try {
+      const response = await axios.post(`${API_URL}/create-cart`, {
+        cartName
+      }, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+  
+      if (response.status !== 200) {
+        throw new Error('Erreur lors de la création du panier');
+      }
+  
+      return response.data.cartId; // Retourne l'ID du nouveau panier créé
+    } catch (error) {
+      console.error('Erreur lors de la création du panier : ', error);
+      throw error;
+    }
+  },
+
+  async softResetCart(cartId: number, accessToken: string): Promise<void> {
+    try {
+      const response = await axios.post(`${API_URL}/reset-cart`, {
+        cartId
+      }, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+  
+      if (response.status !== 200) {
+        throw new Error('Erreur lors de la suppression douce du panier');
+      }
+    } catch (error) {
+      console.error('Erreur lors de la suppression douce du panier : ', error);
+      throw error;
+    }
   }
+  
+  
   
 };
 
