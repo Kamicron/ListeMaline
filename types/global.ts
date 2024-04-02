@@ -26,7 +26,12 @@ export interface IButton {
   icon?: IFontAwesomeIcon
 }
 
-export interface IInput {
+export interface IOption<T> {
+  value: T;
+  label: string;
+}
+
+export interface IInput<T> {
   type: TypeInput;
   color: Theme;
   placeholder: string;
@@ -36,6 +41,7 @@ export interface IInput {
     enable: boolean;
   }
   icon?: IFontAwesomeIcon;
+  option?: IOption<T>[]; 
 }
 
 export interface Message {

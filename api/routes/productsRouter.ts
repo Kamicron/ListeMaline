@@ -62,4 +62,28 @@ router.get('/search/:name', async (req, res) => {
   }
 });
 
+
+router.post('/add_product', async (req, res) => {
+  try {
+    const { name, price, description, category_id, user_id } = req.body;
+
+    // Validation des données
+    if (!name || !price || !description || !category_id || !user_id) {
+      return res.status(400).json({ message: 'Tous les champs sont requis' });
+    }
+
+    // Insérer le nouveau produit dans la base de données
+    const connection = getConnection();
+    const result = await connection.query(
+      'INSERT INTO products (name, price, description, category_id, user_id) VALUES (?, ?, ?, ?, ?)',
+      [name, price, description, category_id, user_id]
+    );
+
+    res.status(201).json({ message: 'Produit créé avec succès', productId: result.insertId });
+  } catch (error) {
+    console.error('Erreur lors de la création du produit : ', error);
+    res.status(500).send('Erreur interne du serveur');
+  }
+});
+
 export default router;

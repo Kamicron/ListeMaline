@@ -5,6 +5,12 @@
     </p>
 
     <InputLMInput__logo v-if="properties?.icon" v-model="vModel" :properties="properties" />
+    <InputLMInputSelect 
+      v-else-if="properties?.type === TypeInput.SELECT" 
+      v-model="test"       
+      :selectOptions="properties?.option"
+      :properties="{ placeholder: `${properties.placeholder}` }"
+    />
     <InputLMInput_base v-else v-model="vModel" :properties="properties" />
     <p class="LM_Input__error nunito-important" :class="properties.error.enable && properties.error.display === '' ? 'LM_Input__error--margin' : ''" v-if="properties?.error">
       {{ properties.error.display }}
@@ -13,6 +19,7 @@
 </template>
 
 <script setup lang="ts">
+import { TypeInput } from "@/assets/enum/global";
 import { store } from "@/store/index";
 import { IInput } from "@/types/global";
 
@@ -31,7 +38,18 @@ watch(
     if (props.properties?.error && props.properties.error.display && newVal !== oldVal) {
       props.properties.error.display = "";
     }
+    console.log('newVal input', newVal);
+    
     emit("update:modelValue", newVal);
+  }
+);
+
+const test= ref()
+
+watch(
+  () => test.value,
+  (vModel) => {
+    console.log('vModel:', vModel);
   }
 );
 

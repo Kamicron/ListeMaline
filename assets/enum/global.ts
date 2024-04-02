@@ -18,7 +18,8 @@ export enum TypeInput {
   EMAIL = 'EMAIL',
   PASSWORD = 'PASSWORD',
   TEL = 'TEL',
-  NUMBER = 'NUMBER'
+  NUMBER = 'NUMBER',
+  SELECT = 'SELECT'
 }
 
 export enum MessageValidation {

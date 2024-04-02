@@ -14,12 +14,12 @@ POST http://localhost:3001/api/users/login
 Content-Type: application/json
 
 {
-  "name": "kami",
-  "password": "test25!!"
+  "name": "testKami",
+  "password": "Test25!!"
 }
 
 ###
-@token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtZSI6ImthbWkiLCJpYXQiOjE3MTEzODk4NDUsImV4cCI6MTcxMTM5MDc0NX0.vyZdkWPsNC7acJHejG4NSxjvaM64z-hL2bjLrUk7lgc
+@token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6InRlc3RrYW1pIiwiaWF0IjoxNzExODAwODI2LCJleHAiOjE3MTE4MDE3MjZ9.NgO5TVDk_evqBdKzr_jJ6RJ6dsuP_moMmAwwi9OiQuo
 
 POST http://localhost:3001/api/users/register
 Content-Type: application/json
@@ -49,8 +49,8 @@ GET http://localhost:3001/api/carts/me
 Authorization: Bearer {{token}}
 ###
 
-@productId=2
-@cartId=1
+@productId=8
+@cartId=2
 POST http://localhost:3001/api/carts/add-product
 Content-Type: application/json
 Authorization: Bearer {{token}}

@@ -8,6 +8,7 @@
       <option value="">Toutes les catégories</option>
       <option v-for="category in categories" :value="category.id" :key="category.id">{{ category.name }}</option>
     </select>
+    <productsAddProduct @product-added="getProducts()"/>
     <!-- Liste des produits -->
     <div class="product-list">
       <CardsProducts  v-for="product in filteredProducts" :key="product.id" :product="product"/>
@@ -36,9 +37,7 @@ const filteredProducts = computed(() => {
   });
 });
 
-// Récupérer les produits depuis l'API RESTful
-const products = ref<Product[]>([]);
-onMounted(async () => {
+async function getProducts() {
   try {
     products.value = await productService.getAllProducts();
     console.log('products.value', products.value);
@@ -46,9 +45,13 @@ onMounted(async () => {
   } catch (error) {
     console.error('Erreur lors de la récupération des produits : ', error);
   }
+}
+
+const products = ref<Product[]>([]);
+onMounted(async () => {
+  getProducts()
 });
 
-// Récupérer les catégories depuis l'API RESTful
 const categories = ref<Category[]>([]);
 onMounted(async () => {
   try {

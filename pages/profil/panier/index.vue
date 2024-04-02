@@ -81,7 +81,7 @@ async function displayUserCarts() {
 displayUserCarts();
 
 async function addProduct(productId: number, cartId: number) {
-  try {
+  try {    
     if(!store.accessToken) return
     await cartService.addProductToCart(productId, cartId, store.accessToken);
     showMessageAlert(MessageValidation.SUCCESS, 'Produit ajouté au panier avec succes');
