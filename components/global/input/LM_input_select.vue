@@ -1,41 +1,43 @@
 <template>
   <div class="input_base">
-    <select v-model="selectedOption" class="input_base__input" @change="handleSelectChange">
-      <option v-for="option in selectOptions" :value="option.value">{{ option.label }}</option>
+    <select v-model="selectedOption.value" class="input_base__input" @change="handleSelectChange">
+      <option v-for="option in selectOptions" :key="option.value.id" :value="option.value">{{ option.label }}</option>
     </select>
   </div>
 </template>
 
 <script setup lang="ts">
-import { store } from '@/store/index';
-import { defineProps, defineEmits, PropType } from 'vue';
+import { defineProps, defineEmits, ref, watch } from 'vue';
 import { IInput, IOption } from '@/types/global';
 
-const props = defineProps({
-  modelValue: { type: Object as PropType<IOption>, required: true },
-  properties: { type: Object as PropType<IInput> },
-  selectOptions: { type: Array as PropType<{ value: string, label: string }[]>, default: () => [] }
-});
+interface Props {
+  modelValue?: IOption<any>; // Le "?" signifie que modelValue est facultatif
+  properties: IInput<any>;
+  selectOptions: { value: any; label: string }[];
+}
+
+const props = defineProps<Props>();
 
 const emit = defineEmits(['update:modelValue']);
 
-const selectedOption = ref<IOption>(props.modelValue);
+const selectedOption = ref<IOption<any>>(props.modelValue || { value: null, label: '' }); // Utilisation d'une valeur par défaut si props.modelValue est undefined
 
 const handleSelectChange = (event: Event) => {
   const target = event.target as HTMLSelectElement;
-  selectedOption.value = target.value;
-  console.log('selectedOption', selectedOption);
+  const selectedIndex = target.selectedIndex;
+  const selectedOptionItem = props.selectOptions[selectedIndex];
   
-  emit('update:modelValue', selectedOption.value);
+  if (selectedOptionItem) {
+    selectedOption.value = selectedOptionItem;
+    emit('update:modelValue', selectedOptionItem);
+  }
 };
 
-watch(
-  () => selectedOption.value,
-  (newVam) => {
-    console.log('newVam:', newVam);
-  }
-);
+watch(selectedOption, (newVal) => {
+  emit('update:modelValue', newVal);
+});
 </script>
+
 
 <style lang='scss' scoped>
 .input_base {

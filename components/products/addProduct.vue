@@ -20,7 +20,6 @@
       :selectOptions="options"
       :properties="{ placeholder: 'Sélectionnez une option' }"
     /> -->
-      <button type="submit">Ajouter</button>
     </div>
   </div>
 </template>
@@ -106,7 +105,6 @@ const inputSelect = ref<IInput>({
   option: categoryOptions
 })
 
-
 const buttonAdd = ref<IButton>({
   display: 'Ajouter produit',
   icon: {
@@ -128,10 +126,18 @@ const showMessageAlert = (status: MessageValidation, message: string) => {
 
 async function addProduct() {
   try {
+
+    console.log('store.accessToken', store.accessToken);
+    console.log('!store.user?.id ', !store.user?.id );
+    console.log('searchCategory.value', searchCategory.value);
+    
     if(!store.accessToken || !store.user?.id || !searchCategory.value) return
     console.log('searchCategory.value', searchCategory);
     
-    formData.category_id = searchCategory.value
+    formData.accessToken = store.accessToken
+    console.log('searchCategory.value.id', searchCategory.value.value.id);
+    
+    formData.category_id = searchCategory.value.value.id
     formData.user_id = store.user?.id
     
     await productService.createProduct(formData);
@@ -152,7 +158,12 @@ onMounted(async () => {
   }
 });
 
-
+watch(
+  () => searchCategory.value,
+  (newCat) => {
+    console.log('newCat:', newCat);
+  }
+);
 </script>
 
 <style lang="scss" scoped>

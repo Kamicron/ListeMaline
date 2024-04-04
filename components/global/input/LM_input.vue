@@ -21,16 +21,18 @@
 <script setup lang="ts">
 import { TypeInput } from "@/assets/enum/global";
 import { store } from "@/store/index";
-import { IInput } from "@/types/global";
+import { IInput, IOption } from "@/types/global";
+import { PropType } from "vue";
 
 const props = defineProps({
-  modelValue: { type: String, required: true },
+  modelValue: { type: [String, Object] as PropType<string | IOption<any>>, required: true },
   properties: { type: Object as PropType<IInput> },
 });
 
+
 const emit = defineEmits(["update:modelValue"]);
 
-const vModel = ref<string>(props.modelValue);
+const vModel = ref<string | IOption<any>>(props.modelValue);
 
 watch(
   () => vModel.value,
@@ -48,8 +50,12 @@ const test= ref()
 
 watch(
   () => test.value,
-  (vModel) => {
-    console.log('vModel:', vModel);
+  (test) => {
+    console.log('test:', test.label);
+    if(!test.label) return
+    emit("update:modelValue", test);
+    console.log('emit');
+    
   }
 );
 

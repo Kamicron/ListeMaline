@@ -62,3 +62,24 @@ Authorization: Bearer {{token}}
 
 
 ###
+
+@userId=3
+@name="test"
+@description="une description"
+@category_id=2
+@price=2
+POST http://localhost:3001/api/producy/add-product
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "user-id": {{userId}},
+  "name": {{name}},
+  "description": {{description}},
+  "category_id": {{category_id}},
+  "price": {{price}}
+
+}
+
+
+###
